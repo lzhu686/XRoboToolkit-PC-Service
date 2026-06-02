@@ -65,8 +65,11 @@ if [ ! -d "$DIR/package/usr/share/icons/hicolor" ] || [ "$DIR/hicolor" -nt "$DIR
     echo "Icons copied/updated."
 fi
 
-# 检查脚本文件是否已复制或有更新
-for script in run2D.sh runRobotDataRecorder.sh run3D.sh runService.sh RobotDemoQt RobotDataRecorder; do
+# wuji-hand-teleop patch (2026-06-02): upstream listed RobotDemoQt and
+# RobotDataRecorder in this loop, but those binaries live in bin/, not in
+# debPack/. They get copied by the "cp -rf $BIN_DIR/*" step below, so the
+# loop fails with "stat 失败" for them on every run. Drop them from the loop.
+for script in run2D.sh runRobotDataRecorder.sh run3D.sh runService.sh; do
     if [ ! -f "$DIR/package/opt/apps/roboticsservice/$script" ] || [ "$DIR/$script" -nt "$DIR/package/opt/apps/roboticsservice/$script" ]; then
         echo "Copying/updating $script..."
         cp $DIR/$script $DIR/package/opt/apps/roboticsservice/
@@ -96,7 +99,11 @@ else
 fi
 echo "Binary files copied."
 
-chmod +x $DIR/package/opt/apps/roboticsservice/SDKDemo/RobotUnityDemo/RobotLinuxDemo.x86_64
+# wuji-hand-teleop patch (2026-06-02): upstream chmod's a Unity demo binary
+# (RobotUnityDemo/RobotLinuxDemo.x86_64) that the source-only vendor distribution
+# does not ship. Guard the chmod so the script does not spam an error every run.
+UNITY_BIN="$DIR/package/opt/apps/roboticsservice/SDKDemo/RobotUnityDemo/RobotLinuxDemo.x86_64"
+[ -f "$UNITY_BIN" ] && chmod +x "$UNITY_BIN"
 
 # 构建 Debian 包
 echo "Building Debian package..."

@@ -405,73 +405,34 @@ if(UNIX)
                       COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/../Redistributable/linux/ConsoleDemo" ${INSTALL_DIR}
 
 
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/../SDKDemo/UnityBin/RobotLinuxDemo" "${INSTALL_DIR}/SDKDemo/RobotUnityDemo"
+                      # wuji-hand-teleop patch (2026-06-02): upstream copies the
+                      # Unity binary demo into the install tree. The vendored
+                      # source-only distribution removes SDKDemo/UnityBin/ to
+                      # keep the repo lean (Unity binaries are reproducible
+                      # from the public Unity project on the upstream
+                      # release page). Skip the copy here so the build does
+                      # not depend on a directory that is no longer present.
                       COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/../SDKDemo/CppSrc" "${INSTALL_DIR}/SDKDemo/CppSrc"
                       COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/../SDK/include" "${INSTALL_DIR}/SDK/include"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/../SDK/linux/64" "${INSTALL_DIR}/SDK/x64"
 
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Core.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Core.so.6" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Core.so.6.6.3" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicui18n.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicui18n.so.56" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicui18n.so.56.1" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicuuc.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicuuc.so.56" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicuuc.so.56.1" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicudata.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicudata.so.56" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libicudata.so.56.1" "${INSTALL_DIR}/lib"
-
-
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Core5Compat.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Core5Compat.so.6" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Core5Compat.so.6.6.3" "${INSTALL_DIR}/lib"
-
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6DBus.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6DBus.so.6" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6DBus.so.6.6.3" "${INSTALL_DIR}/lib"
-
-
-
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Network.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Network.so.6" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Network.so.6.6.3" "${INSTALL_DIR}/lib"
-
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Sql.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Sql.so.6" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Sql.so.6.6.3" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Xml.so" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Xml.so.6" "${INSTALL_DIR}/lib"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/lib/libQt6Xml.so.6.6.3" "${INSTALL_DIR}/lib"
-
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/qml/QtCore"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/qml/QtCore" "${INSTALL_DIR}/qml/QtCore"
-
-
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/translations"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/translations" "${INSTALL_DIR}/translations"
-
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins/generic"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/plugins/generic/libqtuiotouchplugin.so" "${INSTALL_DIR}/plugins/generic"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins/networkinformation"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/plugins/networkinformation" "${INSTALL_DIR}/plugins/networkinformation"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins/platforminputcontexts"
-                      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_PREFIX_PATH}/plugins/platforminputcontexts/libqtvirtualkeyboardplugin.so" "${INSTALL_DIR}/plugins/platforminputcontexts"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins/platforms"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/plugins/platforms" "${INSTALL_DIR}/plugins/platforms"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins/sqldrivers"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/plugins/sqldrivers" "${INSTALL_DIR}/plugins/sqldrivers"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/plugins/tls"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/plugins/tls" "${INSTALL_DIR}/plugins/tls"
-
-
-
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/libexec"
-                      COMMAND ${CMAKE_COMMAND} -E make_directory "${INSTALL_DIR}/resources"
-                      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_PREFIX_PATH}/resources" "${INSTALL_DIR}/resources"
+                      # wuji-hand-teleop patch (2026-06-02): upstream bundled
+                      # a full Qt 6.6.3 install (libQt6*.so.6.6.3, qml/, plugins/,
+                      # translations/, resources/) into bin/lib + bin/plugins,
+                      # copied from ${CMAKE_PREFIX_PATH}/lib. That assumes a custom
+                      # Qt build at /home/pico/Qt6/. On the public-release Ubuntu
+                      # 22.04 build target, system Qt6 is 6.2.4 at
+                      # /usr/lib/x86_64-linux-gnu/ — the .so.6.6.3 filenames do
+                      # not exist and the layout differs (no qml/ or resources/
+                      # under /usr).
+                      #
+                      # RoboticsServiceProcess is a QCoreApplication-only console
+                      # daemon: no platform plugin, no QML, no translations needed
+                      # at runtime. We drop the bundling and depend on system Qt6
+                      # (declared in debPack/control). Qt resolution at runtime is
+                      # the dynamic loader's default search path; runService.sh's
+                      # $LD_LIBRARY_PATH still adds bin/ for the static-linked
+                      # private libs + Redistributable/linux/{openssl,libz,libxcb-cursor}
+                      # which the PRE_BUILD step copies.
                   )
              endif()
 endif()

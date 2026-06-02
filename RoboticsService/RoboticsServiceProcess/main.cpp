@@ -15,7 +15,12 @@
 #define STR(R) #R
 #define STRVALUE(R) STR(R)
 
-Q_DECLARE_METATYPE(QSharedPointer<QImage>)
+// wuji-hand-teleop patch (2026-06-02): upstream had
+// `Q_DECLARE_METATYPE(QSharedPointer<QImage>)` here, but QImage is never
+// referenced anywhere else in this codebase (the daemon talks pose/JSON,
+// not images) and registering the metatype requires QtGui — which this
+// headless service does not otherwise need. Drop the dead declaration so
+// the build does not need to link Qt::Gui on top of Core/Network/Core5Compat.
 
 enum PlatformType
 {
