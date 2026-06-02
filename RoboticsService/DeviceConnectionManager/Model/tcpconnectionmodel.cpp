@@ -298,7 +298,12 @@ void DevConnSDK::TCPConnectionModel::onReadClientMessage()
                 return;
             }
 
-            m_dataBuffer.append(data, sizeof (TCPMsgTail));
+            // wuji-hand-teleop patch (2026-06-01): upstream appended sizeof(TCPMsgTail)
+            // here, but the buffer already holds (sizeof(TCPMsgTail) - m_paddingLength)
+            // bytes from prior chunks; only m_paddingLength bytes remain to fill the
+            // tail. Appending sizeof(TCPMsgTail) over-reads from `data` and can swallow
+            // the start of the next frame.
+            m_dataBuffer.append(data, m_paddingLength);
             data += m_paddingLength;
             size -= m_paddingLength;
 

@@ -9,7 +9,9 @@
 
 #define DEFAULT_LOG_FILE_PATH "log.txt"
 #define MAX_LOG_FILE_NUM 30
-#define MIN(x,y) ((x)>(y)?(x):(y))
+// wuji-hand-teleop patch (2026-06-01): upstream defined MIN as ((x)>(y)?(x):(y))
+// which actually returns MAX. Fixed to the correct comparison.
+#define MIN(x,y) ((x)<(y)?(x):(y))
 
 
 class COMMONUTILSSHARED_EXPORT CommonUtils:public QObject
