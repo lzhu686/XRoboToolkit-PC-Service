@@ -203,6 +203,12 @@ QString CommonUtils::getLocalIPv4Address()
 
 bool CommonUtils::isOnline()
 {
+    // wuji-hand-teleop patch (2026-06-02): QNetworkInformation::loadDefaultBackend()
+    // was introduced in Qt 6.4. Ubuntu 22.04 ships Qt 6.2.4, where the API does
+    // not exist and the upstream code fails to compile. isOnline() is not called
+    // anywhere in the codebase, so we keep the Qt 6.4+ path verbatim and stub the
+    // older one to return true (assume online).
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     if(!QNetworkInformation::loadDefaultBackend())
     {
         qDebug() << "QNetworkInformation load failed." << Qt::endl;
@@ -220,4 +226,7 @@ bool CommonUtils::isOnline()
     {
         return false;
     }
+#else
+    return true;
+#endif
 }
